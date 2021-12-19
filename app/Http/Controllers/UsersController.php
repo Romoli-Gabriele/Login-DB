@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Models\User;
+use App\Models\LoginRequest;
 use phpDocumentor\Reflection\Types\This;
 
 class UsersController extends Controller
@@ -20,25 +21,24 @@ class UsersController extends Controller
         $newUser = new User;
         $newUser->name= request('name');
         $newUser->email= request('email');
-        $newUser->password= bcrypt(request('password'));
+        $newUser->password= request('password');
         $newUser->save();
         session_start();
         $_SESSION["newUser"]=$newUser;
 
         return view('users.SingInComplete');
     }
-    /*public function login(LoginRequest $request){
-        $credentials = $request->getCredentials();
+    public function login(LoginRequest $request){
 
-        if(!Auth::validate($credentials)):
-            return redirect()->to('login')
-                ->withErrors(trans('auth.failed'));
-        endif;
+        if($request->findUsr($request->email)!=false){
+            
+            
+        }
+        
+        
 
-        $user = Auth::getProvider()->retrieveByCredentials($credentials);
+        
 
-        Auth::login($user);
-
-        return $this->authenticated($request, $user);
-    }*/
+        
+    }
 }
